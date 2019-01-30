@@ -61,13 +61,14 @@ def getLink(soup):
 #main
 if __name__=='__main__':
     url = 'https://today.duke.edu/search/story?keys=&sort_by=created&sort_order=DESC&page={}'
+    # writeSoup('temp2.html',url.format(80))
 
     #init
     page = 0
     pbar = tqdm(total=10401, position=0, ncols=80, mininterval=1.0)
     keys = ['page','date','title','subtitle','snippet','tags','source','link'] #set key order to ensure consistency when appending to csv
 
-    with open('out.csv', 'w') as f:
+    with open('out.csv', 'w', encoding='utf-8') as f:
         w = DictWriter(f, keys) 
         w.writeheader()
 
