@@ -61,16 +61,16 @@ def getLink(soup):
 #main
 if __name__=='__main__':
     url = 'https://today.duke.edu/search/story?keys=&sort_by=created&sort_order=DESC&page={}'
-    # writeSoup('temp2.html',url.format(80))
+    # writeSoup('temp2.html',url.format(222))
 
     #init
-    page = 0
-    pbar = tqdm(total=10401, position=0, ncols=80, mininterval=1.0)
+    page = 7894
+    pbar = tqdm(total=10401-page+1, position=0, ncols=80, mininterval=1.0)
     keys = ['page','date','title','subtitle','snippet','tags','source','link'] #set key order to ensure consistency when appending to csv
 
-    with open('out.csv', 'w', encoding='utf-8') as f:
+    with open('out.csv', 'a', encoding='utf-8') as f:
         w = DictWriter(f, keys) 
-        w.writeheader()
+        # w.writeheader()
 
         while True:
             soup = getSoup(url.format(page))
@@ -78,10 +78,12 @@ if __name__=='__main__':
                 break #reached end
             
             for articleSoup in soup.find_all('article'):
-                w.writerow(getArticle(page, articleSoup))
+                try:
+                    w.writerow(getArticle(page, articleSoup))
+                except Exception as e:
+                    print(page, e)
 
             page+=1 #increment page
             pbar.update(1)
 
-            sleep(2)
-        
+            sleep(2)        
